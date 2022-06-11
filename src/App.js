@@ -1,24 +1,57 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes } from "react-router-dom";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import Profile from "./components/Profile";
+import NotFound from "./components/NotFound";
+import Posts from "./components/Posts";
+import Post from "./components/Post";
+import Navbar from "./components/Navbar";
+import { AuthProvider } from "./components/Auth";
+import Logout from "./components/Logout";
+import Protected from "./components/Protected";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route
+          path="/logout"
+          element={
+            <Protected>
+              <Logout />
+            </Protected>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <Protected>
+              <Profile />
+            </Protected>
+          }
+        />
+        <Route
+          path="/posts"
+          element={
+            <Protected>
+              <Posts />
+            </Protected>
+          }
+        />
+        <Route
+          path="/posts/:userId"
+          element={
+            <Protected>
+              <Post />
+            </Protected>
+          }
+        />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 
